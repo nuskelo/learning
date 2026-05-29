@@ -18,14 +18,37 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 List<Runner> runners = new List<Runner>();
+
 runners.Add(new Runner("Vlad", 200));
-runners.Add(new Runner("Dima", 50));
+runners.Add(new Runner("Dima", 150));
 runners.Add(new Runner("Savchuk", 100));
+runners.Add(new Runner("Yarik", 250));
+runners.Add(new Runner("Tihon", 50));
 
 List<RunRecord> runRecords = new List<RunRecord>();
+
 runRecords.Add(new RunRecord(10, 55, new DateTime(2026, 05, 01), 0));
-runRecords.Add(new RunRecord(5, 40, new DateTime(2026, 06, 02), 1));
-runRecords.Add(new RunRecord(6, 30, new DateTime(2026, 05, 07), 2));
+runRecords.Add(new RunRecord(12.5, 65, new DateTime(2026, 05, 05), 0));
+runRecords.Add(new RunRecord(8, 42, new DateTime(2026, 05, 10), 0));
+runRecords.Add(new RunRecord(21.1, 115, new DateTime(2026, 05, 15), 0));
+
+runRecords.Add(new RunRecord(5, 25, new DateTime(2026, 05, 02), 1));
+runRecords.Add(new RunRecord(5, 24, new DateTime(2026, 05, 06), 1));
+runRecords.Add(new RunRecord(7, 35, new DateTime(2026, 05, 12), 1));
+runRecords.Add(new RunRecord(10, 52, new DateTime(2026, 05, 18), 1));
+
+runRecords.Add(new RunRecord(3, 15, new DateTime(2026, 05, 03), 2));
+runRecords.Add(new RunRecord(4, 22, new DateTime(2026, 05, 08), 2));
+runRecords.Add(new RunRecord(3.5, 18, new DateTime(2026, 05, 14), 2));
+
+runRecords.Add(new RunRecord(15, 75, new DateTime(2026, 05, 04), 3));
+runRecords.Add(new RunRecord(18, 95, new DateTime(2026, 05, 09), 3));
+runRecords.Add(new RunRecord(15, 72, new DateTime(2026, 05, 16), 3));
+runRecords.Add(new RunRecord(20, 105, new DateTime(2026, 05, 22), 3));
+
+runRecords.Add(new RunRecord(2, 8, new DateTime(2026, 05, 07), 4));
+runRecords.Add(new RunRecord(2.5, 11, new DateTime(2026, 05, 11), 4));
+runRecords.Add(new RunRecord(3, 13, new DateTime(2026, 05, 20), 4));
 
 app.MapGet("/runners", () =>
 {
