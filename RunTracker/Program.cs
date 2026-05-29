@@ -92,7 +92,8 @@ app.MapPut("runners/{id}", (int id, Runner newRunner) =>
     }
     else
     {
-        runners[ID] = newRunner;
+        runners[ID].Name = newRunner.Name;
+        runners[ID].Goal = newRunner.Goal;
         return Results.Ok(runners[ID]);
     }
 });
@@ -106,7 +107,10 @@ app.MapPut("runrecords/{id}", (int id, RunRecord newRunRecord) =>
     }
     else
     {
-        runRecords[ID] = newRunRecord;
+        runRecords[ID].Distance = newRunRecord.Distance;
+        runRecords[ID].RunnerId = newRunRecord.RunnerId;
+        runRecords[ID].TimeMin = newRunRecord.TimeMin;
+
         return Results.Ok(runRecords[ID]);
     }
 });
