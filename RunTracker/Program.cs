@@ -19,11 +19,11 @@ app.UseSwaggerUI();
 
 List<Runner> runners = new List<Runner>();
 
-runners.Add(new Runner("Vlad", 200));
-runners.Add(new Runner("Dima", 150));
-runners.Add(new Runner("Savchuk", 100));
-runners.Add(new Runner("Yarik", 250));
-runners.Add(new Runner("Tihon", 50));
+runners.Add(new Runner("Vlad", 200, 90));
+runners.Add(new Runner("Dima", 150, 75));
+runners.Add(new Runner("Savchuk", 100, 80));
+runners.Add(new Runner("Yarik", 250, 90));
+runners.Add(new Runner("Tihon", 50, 75));
 
 List<RunRecord> runRecords = new List<RunRecord>();
 
@@ -63,6 +63,7 @@ app.MapGet("/runners", () =>
 
 app.MapGet("/runrecords", () =>
 {
+    CalculateCalories();
     return runRecords;
 });
 
@@ -86,6 +87,7 @@ app.MapGet("/runners/{id}", (int id) =>
 
 app.MapGet("/runrecords/{id}", (int id) =>
 {
+    CalculateCalories();
     foreach (var runRecord in runRecords)
     {
         if (runRecord.Id == id) return Results.Ok(runRecord);
@@ -170,6 +172,7 @@ app.MapDelete("/runrecords/{id}", (int id) =>
 
 app.MapGet("/runners/{id}/runs", (int id) =>
 {
+    CalculateCalories();
     return runRecords.Where(r => r.RunnerId == id);
 });
 
@@ -199,6 +202,21 @@ void CalculateAllTotalKm()
     }
 }
 
+void CalculateCalories()
+{
+    for (int i = 0; i < runRecords.Count(); i++)
+    {
+        foreach (var runner in runners)
+        {
+            if (runner.Id == runRecords[i].RunnerId)
+            {
+                var calories = runner.Weight * runRecords[i].Distance * 1.036;
+                runRecords[i].SetCalories(calories);
+            }
+        }
+    }
+}
+
 app.Run();
 
 public class Runner
@@ -208,6 +226,7 @@ public class Runner
     public int Id { get; private set; }
     public double Goal { get; set; }
     public double TotalKm { get; private set; }
+    public double Weight { get; set; }
 
     public double GoalPercent
     {
@@ -228,10 +247,11 @@ public class Runner
         Id = _id++;
     }
 
-    public Runner(string name, double goal)
+    public Runner(string name, double goal, double weight)
     {
         Name = name;
         Goal = goal;
+        Weight = weight;
         Id = _id++;
     }
 
@@ -276,6 +296,8 @@ public class RunRecord
         }
     }
 
+    public double Calories { get; private set; }
+
     public RunRecord()
     {
         Id = _id++;
@@ -288,4 +310,10 @@ public class RunRecord
         RunnerId = runnerId;
         Id = _id++;
     }
+
+    public void SetCalories(double calories)
+    {
+        Calories = calories;
+    }
+
 }
