@@ -209,6 +209,15 @@ public class Runner
     public double Goal { get; set; }
     public double TotalKm { get; private set; }
 
+    public double GoalPercent
+    {
+        get
+        {
+            if (Goal == 0) return 0;
+            return TotalKm * 100 / Goal;
+        }
+    }
+
     public Runner()
     {
         Id = _id++;
