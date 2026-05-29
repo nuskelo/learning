@@ -29,17 +29,7 @@ runRecords.Add(new RunRecord(6, 30, new DateTime(2026, 05, 07), 2));
 
 app.MapGet("/runners", () =>
 {
-    for (int i = 0; i < runners.Count(); i++)
-    {
-        runners[i].TotalKm = 0;
-        foreach (var runRecord in runRecords)
-        {
-            if (runRecord.RunnerId == runners[i].Id)
-            {
-                runners[i].TotalKm += runRecord.Distance;
-            }
-        }
-    }
+    CalculateAllTotalKm();
     if (runners.Count == 0)
     {
         return Results.NotFound();
@@ -60,12 +50,12 @@ app.MapGet("/runners/{id}", (int id) =>
     {
         return Results.NotFound();
     }
-    runners[ID].TotalKm = 0;
+    runners[ID].ResetTotalKm();
     foreach (var runRecord in runRecords)
     {
         if (runRecord.RunnerId == runners[ID].Id)
         {
-            runners[ID].TotalKm += runRecord.Distance;
+            runners[ID].AddKm(runRecord.Distance);
         }
     }
     return Results.Ok(runners[ID]);
@@ -156,6 +146,32 @@ app.MapGet("/runners/{id}/runs", (int id) =>
     return runRecords.Where(r => r.RunnerId == id);
 });
 
+app.MapGet("runners/top", () =>
+{
+    CalculateAllTotalKm();
+    var topRunners = runners.OrderByDescending(r => r.TotalKm);
+    if (topRunners.Count() == 0)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(topRunners);
+});
+
+void CalculateAllTotalKm()
+{
+    for (int i = 0; i < runners.Count(); i++)
+    {
+        runners[i].ResetTotalKm();
+        foreach (var runRecord in runRecords)
+        {
+            if (runRecord.RunnerId == runners[i].Id)
+            {
+                runners[i].AddKm(runRecord.Distance);
+            }
+        }
+    }
+}
+
 app.Run();
 
 public class Runner
@@ -164,7 +180,7 @@ public class Runner
     public string? Name { get; set; }
     public int Id { get; private set; }
     public double Goal { get; set; }
-    public double TotalKm { get; set; }
+    public double TotalKm { get; private set; }
 
     public Runner()
     {
@@ -183,6 +199,15 @@ public class Runner
         Id = _id++;
     }
 
+    public void ResetTotalKm()
+    {
+        TotalKm = 0;
+    }
+
+    public void AddKm(double distance)
+    {
+        TotalKm += distance;
+    }
 
 }
 
