@@ -29,6 +29,15 @@ class UniversityManager
             student.StudentInfo();
         }
     }
+
+    public void SortStudentsByAge()
+    {
+        var sortedStudents = from student in students orderby student.Age select student;
+        foreach (var student in sortedStudents)
+        {
+            student.StudentInfo();
+        }
+    }
 }
 
 class Student
@@ -44,6 +53,8 @@ class Student
     {
         Console.WriteLine($"Id: {Id}, Name: {Name}, Age: {Age}, Gender: {Gender}");
     }
+
+
 }
 
 class University
