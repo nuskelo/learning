@@ -52,6 +52,20 @@ class UniversityManager
             student.StudentInfo();
         }
     }
+
+    public void StudentAndUniversityNameCollection()
+    {
+        var newCollection = from student in students
+                            join university in universities
+                            on student.UniversityId equals university.Id
+                            orderby student.Name
+                            select new { StudentName = student.Name, UniversityName = university.Name };
+        System.Console.WriteLine("New collection:");
+        foreach (var n in newCollection)
+        {
+            System.Console.WriteLine($"Student: {n.StudentName}, University: {n.UniversityName}");
+        }
+    }
 }
 
 class Student

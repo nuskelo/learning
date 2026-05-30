@@ -2,6 +2,7 @@
 um.FemaleStudents();
 um.SortStudentsByAge();
 um.AllStudentsFromNltu();
+um.StudentAndUniversityNameCollection();
 
 int[] numbers = { 1, 5, 3, 2, 0, 10, 15, 8 };
 
