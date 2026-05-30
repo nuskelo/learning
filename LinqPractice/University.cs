@@ -2,8 +2,8 @@ using System.Data.Common;
 
 class UniversityManager
 {
-    public List<Student>? students;
-    public List<University>? universities;
+    public List<Student> students;
+    public List<University> universities;
 
     public UniversityManager()
     {
@@ -24,6 +24,7 @@ class UniversityManager
     public void FemaleStudents()
     {
         var maleStudents = from student in students where student.Gender == "Female" select student;
+        System.Console.WriteLine("Female Students:");
         foreach (var student in maleStudents)
         {
             student.StudentInfo();
@@ -33,7 +34,20 @@ class UniversityManager
     public void SortStudentsByAge()
     {
         var sortedStudents = from student in students orderby student.Age select student;
+        System.Console.WriteLine("Students sorted by age:");
         foreach (var student in sortedStudents)
+        {
+            student.StudentInfo();
+        }
+    }
+
+    public void AllStudentsFromNltu()
+    {
+        var studentsFromNltu = from student in students join university in universities on student.UniversityId equals university.Id where university.Name == "nltu" select student;
+
+        System.Console.WriteLine("Students from NLTU:");
+
+        foreach (var student in studentsFromNltu)
         {
             student.StudentInfo();
         }
@@ -51,7 +65,7 @@ class Student
 
     public void StudentInfo()
     {
-        Console.WriteLine($"Id: {Id}, Name: {Name}, Age: {Age}, Gender: {Gender}");
+        Console.WriteLine($"Id: {Id}, Name: {Name}, Age: {Age}, Gender: {Gender}, UniversityId: {UniversityId}");
     }
 
 
